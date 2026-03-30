@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Verifica_o_de_tipo_de_intera_o</name>
+        <label>Verificação de tipo de interação</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Atualiza_Pedido_Suporte</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>Interacao_tipo_Cliente</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Tipo__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cliente</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_Pedido</targetReference>
+            </connector>
+            <label>Interacao tipo Cliente</label>
+        </rules>
+        <rules>
+            <name>InteracaotipoAgente</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Tipo__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Agente</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>C_pia_1_de_Atualiza_Pedido</targetReference>
+            </connector>
+            <label>Interacao tipo Agente</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Atualiza Pedido a cada Interação {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Pedido Suporte - Atualiza Pedido Suporte a cada Interação</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_Pedido</name>
+        <label>Atualiza Pedido Cliente</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Em Atendimento</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UltimaInteracao__c</field>
+            <value>
+                <elementReference>$Record.CreatedDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.PedidoSuporte__r</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Atualiza_Pedido_Suporte</name>
+        <label>Atualiza Pedido Suporte</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>UltimaInteracao__c</field>
+            <value>
+                <elementReference>$Record.CreatedDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.PedidoSuporte__r</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>C_pia_1_de_Atualiza_Pedido</name>
+        <label>Atualiza Pedido Agente</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Aguardando Cliente</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UltimaInteracao__c</field>
+            <value>
+                <elementReference>$Record.CreatedDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.PedidoSuporte__r</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Verifica_o_de_tipo_de_intera_o</targetReference>
+        </connector>
+        <object>Interacao__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
